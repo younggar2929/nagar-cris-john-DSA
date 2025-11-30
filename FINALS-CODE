@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+
+struct Reservation {
+    string name;
+    int partySize;
+    string date;
+    string time;
+};
+
+
+vector<Reservation> reservations;
+
+
+void displayMenu() {
+    cout << "Restaurant Reservation System" << endl;
+    cout << "1. Make Reservation" << endl;
+    cout << "2. Cancel Reservation" << endl;
+    cout << "3. Display Reservations" << endl;
+    cout << "4. Exit" << endl;
+}
+
+void makeReservation() {
+    Reservation newReservation;
+    cout << "Enter name: ";
+    getline(cin, newReservation.name);
+    cout << "Enter party size: ";
+    cin >> newReservation.partySize;
+    cin.ignore(); // Ignore newline character
+    cout << "Enter date (YYYY-MM-DD): ";
+    getline(cin, newReservation.date);
+    cout << "Enter time (HH:MM): ";
+    getline(cin, newReservation.time);
+    reservations.push_back(newReservation);
+    cout << "Reservation confirmed." << endl;
+}
+
+void cancelReservation() {
+    string name;
+    cout << "Enter name to cancel reservation: ";
+    getline(cin, name);
+    for (int i = 0; i < reservations.size(); i++) {
+        if (reservations[i].name == name) {
+            reservations.erase(reservations.begin() + i);
+            cout << "Reservation cancelled." << endl;
+            return;
+        }
+    }
+    cout << "Reservation not found." << endl;
+}
+
+
+void displayReservations() {
+    cout << "Reservations:" << endl;
+    for (int i = 0; i < reservations.size(); i++) {
+        cout << i + 1 << ". " << reservations[i].name << " (" << reservations[i].partySize << " people)" << endl;
+        cout << "Date: " << reservations[i].date << ", Time: " << reservations[i].time << endl;
+    }
+}
+
+int main() {
+    while (true) {
+        displayMenu();
+        int choice;
+        cin >> choice;
+        cin.ignore(); // Ignore newline character
+
+        switch (choice) {
+            case 1:
+                makeReservation();
+                break;
+            case 2:
+                cancelReservation();
+                break;
+            case 3:
+                displayReservations();
+                break;
+            case 4:
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
